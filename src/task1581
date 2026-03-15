@@ -1,0 +1,101 @@
+package timus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class task1581 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Чтение количества чисел
+        int n = scanner.nextInt();
+
+        // Чтение последовательности чисел
+        int[] numbers = new int[n];
+        for (int i = 0; i < n; i++) {
+            numbers[i] = scanner.nextInt();
+        }
+
+        scanner.close();
+
+        // Преобразование последовательности
+        List<Integer> result = encodeRLE(numbers);
+
+        // Вывод результата
+        for (int i = 0; i < result.size(); i++) {
+            System.out.print(result.get(i));
+            if (i < result.size() - 1) {
+                System.out.print(" ");
+            }
+        }
+    }
+
+    /**
+     * Преобразует последовательность чисел в RLE-формат:
+     * (количество подряд идущих одинаковых чисел, само число)
+     *
+     * @param numbers исходная последовательность
+     * @return закодированная последовательность
+     */
+    public static List<Integer> encodeRLE(int[] numbers) {
+        List<Integer> encoded = new ArrayList<>();
+
+        if (numbers.length == 0) {
+            return encoded;
+        }
+
+        int current = numbers[0];
+        int count = 1;
+
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] == current) {
+                // Тот же самый элемент - увеличиваем счетчик
+                count++;
+            } else {
+                // Новый элемент - добавляем предыдущую группу в результат
+                encoded.add(count);
+                encoded.add(current);
+
+                // Начинаем новую группу
+                current = numbers[i];
+                count = 1;
+            }
+        }
+
+        // Добавляем последнюю группу
+        encoded.add(count);
+        encoded.add(current);
+
+        return encoded;
+    }
+
+    /**
+     * Альтернативное решение с использованием StringBuilder
+     */
+    public static String encodeRLEAsString(int[] numbers) {
+        if (numbers.length == 0) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        int count = 1;
+        int current = numbers[0];
+
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] == current) {
+                count++;
+            } else {
+                result.append(count).append(" ").append(current).append(" ");
+                current = numbers[i];
+                count = 1;
+            }
+        }
+
+        result.append(count).append(" ").append(current);
+
+        return result.toString();
+    }
+}
