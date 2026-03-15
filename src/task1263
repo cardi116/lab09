@@ -1,0 +1,32 @@
+package timus;
+
+
+import java.util.Scanner;
+
+public class task1263 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Чтение N и M
+        int N = scanner.nextInt();
+        int M = scanner.nextInt();
+
+        // Массив для подсчета голосов (индексы от 1 до N)
+        int[] votes = new int[N + 1]; // +1 чтобы использовать индексы от 1
+
+        // Чтение и подсчет голосов
+        for (int i = 0; i < M; i++) {
+            int candidate = scanner.nextInt();
+            votes[candidate]++;
+        }
+
+        scanner.close();
+
+        // Вывод процентов для каждого кандидата
+        for (int i = 1; i <= N; i++) {
+            double percentage = (double) votes[i] * 100 / M;
+            System.out.printf("%.2f%n", percentage);
+        }
+    }
+}
