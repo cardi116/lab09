@@ -1,0 +1,116 @@
+package timus;
+
+import java.util.Scanner;
+
+public class task2056{
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Чтение количества экзаменов
+        int n = scanner.nextInt();
+
+        // Чтение оценок
+        int[] grades = new int[n];
+        for (int i = 0; i < n; i++) {
+            grades[i] = scanner.nextInt();
+        }
+
+        scanner.close();
+
+        // Определение типа стипендии
+        String result = determineScholarship(grades);
+        System.out.println(result);
+    }
+
+    /**
+     * Определяет тип стипендии по оценкам
+     * @param grades массив оценок
+     * @return тип стипендии: "Named", "High", "Common" или "None"
+     */
+    public static String determineScholarship(int[] grades) {
+        boolean hasTriples = false;
+        boolean allFives = true;
+        int sum = 0;
+
+        // Анализ оценок
+        for (int grade : grades) {
+            if (grade == 3) {
+                hasTriples = true;
+            }
+            if (grade != 5) {
+                allFives = false;
+            }
+            sum += grade;
+        }
+
+        // Проверка условий
+        if (hasTriples) {
+            return "None";
+        }
+
+        if (allFives) {
+            return "Named";
+        }
+
+        double average = (double) sum / grades.length;
+        if (average >= 4.5) {
+            return "High";
+        }
+
+        return "Common";
+    }
+
+    /**
+     * Альтернативное решение с пошаговой проверкой условий
+     */
+    public static String determineScholarshipStepByStep(int[] grades) {
+        System.out.println("Анализ оценок Васи:");
+
+        // Шаг 1: Проверка наличия троек
+        boolean hasTriples = false;
+        for (int grade : grades) {
+            if (grade == 3) {
+                hasTriples = true;
+                break;
+            }
+        }
+
+        if (hasTriples) {
+            System.out.println("  Есть тройки → стипендии нет");
+            return "None";
+        }
+
+        // Шаг 2: Проверка на именную стипендию (все пятерки)
+        boolean allFives = true;
+        for (int grade : grades) {
+            if (grade != 5) {
+                allFives = false;
+                break;
+            }
+        }
+
+        if (allFives) {
+            System.out.println("  Все пятерки → именная стипендия");
+            return "Named";
+        }
+
+        // Шаг 3: Вычисление среднего балла
+        int sum = 0;
+        for (int grade : grades) {
+            sum += grade;
+        }
+        double average = (double) sum / grades.length;
+        System.out.printf("  Средний балл: %.2f%n", average);
+
+        // Шаг 4: Проверка на повышенную стипендию
+        if (average >= 4.5) {
+            System.out.println("  Средний балл >= 4.5 → повышенная стипендия");
+            return "High";
+        }
+
+        // Шаг 5: Обычная стипендия
+        System.out.println("  Нет троек, но средний балл < 4.5 → обычная стипендия");
+        return "Common";
+    }
+}
